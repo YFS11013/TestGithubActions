@@ -4,12 +4,12 @@
   uses: ChristopheLav/iis-deploy@v1.0.0
   with:
     # IIS website name
-    website-name: 
+    website-name: ${{ secrets.IIS_WEBSITE_NAME }}
     # MS Deploy Service URL
-    msdeploy-service-url: 
+    msdeploy-service-url: ${{ secrets.IIS_WEBSITE_NAME }}
     # Username used by Basic authentication to the MS Deploy Service
-    msdeploy-username: 
+    msdeploy-username: ${{ secrets.IIS_WEBSITE_NAME }}
     # Password used by Basic authentication to the MS Deploy Service
-    msdeploy-password: 
+    msdeploy-password: ${{ secrets.IIS_WEBSITE_NAME }}
     # The path to the source directory that will be deployed
-    source-path: 
+    source-path: ${{ secrets.IIS_WEBSITE_NAME }}
