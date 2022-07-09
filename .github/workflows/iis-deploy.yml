@@ -1,15 +1,30 @@
-- name: IIS Deploy
-  # You may pin to the exact commit or the version.
-  # uses: ChristopheLav/iis-deploy@3b6a141da6e1923a4af25e01734ab58c081f8444
-  uses: ChristopheLav/iis-deploy@v1.0.0
-  with:
-    # IIS website name
-    website-name: ${{ secrets.IIS_WEBSITE_NAME }}
-    # MS Deploy Service URL
-    msdeploy-service-url: ${{ secrets.MSDEPLOY_SERVICE_URL }}
-    # Username used by Basic authentication to the MS Deploy Service
-    msdeploy-username: ${{ secrets.IIS_SERVER_USERNAME }}
-    # Password used by Basic authentication to the MS Deploy Service
-    msdeploy-password: ${{ IIS_SERVER_PASSWORD }}
-    # The path to the source directory that will be deployed
-    source-path: ${{ secrets.IIS_WEBSITE_NAME }}
+name: Dotnet Build-Test-MSDeploy your project
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  Build-Test-Deploy:
+    runs-on: windows-latest
+    env:
+      PROJECT_DIRECTORY_PATH: "TestGithubActions"
+      IIS_SERVER_COMPUTER_NAME: ${{ secrets.IIS_SERVER_COMPUTER_NAME }}
+      IIS_WEBSITE_NAME: ${{ secrets.IIS_WEBSITE_NAME }}
+      IIS_SERVER_USERNAME: ${{ secrets.IIS_SERVER_USERNAME }}
+      IIS_SERVER_PASSWORD: ${{ secrets.IIS_SERVER_PASSWORD }}
+      RECYCLE_APP_NAME: ${{ secrets.RECYCLE_APP_NAME }}
+      WEBSITE_CONTENT_PATH: ${{ secrets.WEBSITE_CONTENT_PATH }}
+
+    steps:
+    - name: Setup .NET Core
+      uses: ChristopheLav/iis-deploy@v1
+      with:
+        dotnet-version: 6.0.X
+        website-name: 'MyWebsite'
+        msdeploy-service-url: ${{ secrets.MSDEPLOY_URL }}
+        msdeploy-username: ${{ secrets.MSDEPLOY_USERNAME }}
+        msdeploy-password: ${{ secrets.MSDEPLOY_PASSWORD }}
+        source-path: ${{ github.workspace }}\website\publish
+
